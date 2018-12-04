@@ -1,0 +1,7 @@
+Is Rob using comments mapped? Meaning no real significance for post vs comment?
+
+How does a relational database store many to many relationships like User steven row -- where would you neatly insert new friends?
+
+Walk me through add fragment
+
+You can kind of see it's not so much about creating a hierarchy it's about making your client as efficent as possible -- what types of queries do you want to make? How will pagination operate?
