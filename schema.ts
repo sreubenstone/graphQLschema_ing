@@ -58,7 +58,13 @@ const UserType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
-        friends: { type: GraphQLString },
+        friends: {
+            type: new GraphQLList(UserType),
+            async resolve(parent, args) {
+                const friends = await knex.table('likes').select().where({ comment_id: parent.id })
+                return friends
+            }
+        }
     })
 });
 
@@ -68,6 +74,13 @@ const LikeType = new GraphQLObjectType({
         id: { type: GraphQLID },
         user_id: { type: GraphQLInt },
         comment_id: { type: GraphQLInt },
+        user: {
+            type: UserType,
+            async resolve(parent, args) {
+                const user = await knex.table('users').select().where({ id: parent.user_id })
+                return user[0]
+            }
+        }
     })
 });
 
