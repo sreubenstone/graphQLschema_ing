@@ -61,8 +61,9 @@ const UserType = new GraphQLObjectType({
         friends: {
             type: new GraphQLList(UserType),
             async resolve(parent, args) {
-                const friends = await knex.table('likes').select().where({ comment_id: parent.id })
-                return friends
+                const friends = await knex.raw(`SELECT users.name FROM users INNER JOIN connections ON users.id = connections.user_id::integer WHERE connections.user_id::integer = ${parent.id} OR connections.user_accepted_id = ${parent.id}`)
+                console.log('friends:', friends)
+                return friends.rows
             }
         }
     })
